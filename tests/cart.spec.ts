@@ -1,0 +1,53 @@
+import { test, expect } from '@playwright/test';
+import { ProductsPage } from './pages/ProductsPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { BASE_URL, checkoutData } from './fixtures/testData';
+
+test.describe('Shopping Cart', () => {
+  test('should add a product to cart and verify total price', async ({ page }) => {
+    const productsPage = new ProductsPage(page);
+    await productsPage.goto(BASE_URL);
+    await productsPage.clickFirstProduct();
+
+    const detailPage = new ProductDetailPage(page);
+    page.once('dialog', async (dialog) => await dialog.accept());
+    await detailPage.addToCart();
+
+    await productsPage.navigateToCart();
+    await page.waitForSelector('#tbodyid tr', { timeout: 10000 });
+
+    const cartPage = new CartPage(page);
+    await expect(cartPage.totalPrice).not.toBeEmpty();
+  });
+});
+
+test.describe('Checkout Process', () => {
+  test('should complete checkout with valid data', async ({ page }) => {
+    const productsPage = new ProductsPage(page);
+    await productsPage.goto(BASE_URL);
+    await productsPage.clickFirstProduct();
+
+    const detailPage = new ProductDetailPage(page);
+    page.once('dialog', async (dialog) => await dialog.accept());
+    await detailPage.addToCart();
+
+    await productsPage.navigateToCart();
+    await page.waitForSelector('#tbodyid tr');
+
+    const cartPage = new CartPage(page);
+    await cartPage.clickPlaceOrder();
+
+    const checkoutPage = new CheckoutPage(page);
+    await checkoutPage.fillCheckoutForm(checkoutData);
+    await checkoutPage.purchase();
+
+    const message = await checkoutPage.getConfirmationMessage();
+    expect(message).toContain('Thank you for your purchase!');
+
+    await checkoutPage.confirmPurchase();
+  });
+
+
+});
