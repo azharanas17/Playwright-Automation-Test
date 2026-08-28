@@ -11,45 +11,53 @@ test.describe('Login Functionality', () => {
   });
 
   test.describe('Login Modal', () => {
-    test('should open login modal when clicking login link', async () => {
+    test('should open login modal when clicking login link', async ({ page }) => {
       await loginPage.openLoginModal();
       await expect(loginPage.loginModal).toBeVisible();
+      await page.screenshot({ path: 'screenshots/login/login-modal.png' });
     });
 
-    test('should display all login form elements', async () => {
+    test('should display all login form elements', async ({ page }) => {
       await loginPage.openLoginModal();
       await expect(loginPage.usernameField).toBeVisible();
       await expect(loginPage.passwordField).toBeVisible();
       await expect(loginPage.loginButton).toBeVisible();
+      await page.screenshot({ path: 'screenshots/login/login-form-elements.png' });
     });
   });
 
   test.describe('Login Validation', () => {
-    test('should show alert with invalid credentials', async () => {
+    test('should show alert with invalid credentials', async ({ page }) => {
       loginPage.page.on('dialog', async (dialog) => {
         expect(dialog.message()).toContain('User does not exist.');
         await dialog.accept();
       });
 
       await loginPage.login(loginData.invalid.username, loginData.invalid.password);
+      await page.waitForTimeout(500);
+      await page.screenshot({ path: 'screenshots/login/invalid-credentials.png' });
     });
 
-    test('should show alert with empty credentials', async () => {
+    test('should show alert with empty credentials', async ({ page }) => {
       loginPage.page.on('dialog', async (dialog) => {
         expect(dialog.message()).toContain('Please fill out Username and Password.');
         await dialog.accept();
       });
 
       await loginPage.login(loginData.empty.username, loginData.empty.password);
+      await page.waitForTimeout(500);
+      await page.screenshot({ path: 'screenshots/login/empty-credentials.png' });
     });
 
-    test('should show alert with only username provided', async () => {
+    test('should show alert with only username provided', async ({ page }) => {
       loginPage.page.on('dialog', async (dialog) => {
         expect(dialog.message()).toContain('Please fill out Username and Password.');
         await dialog.accept();
       });
 
       await loginPage.login(loginData.usernameOnly.username, loginData.usernameOnly.password);
+      await page.waitForTimeout(500);
+      await page.screenshot({ path: 'screenshots/login/username-only.png' });
     });
   });
 });
