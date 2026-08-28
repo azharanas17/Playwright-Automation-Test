@@ -10,14 +10,14 @@ test.describe('Product Browsing', () => {
     await expect(productsPage.productNames.first()).toBeVisible();
     const count = await productsPage.getProductCount();
     expect(count).toBeGreaterThan(0);
-    await page.screenshot({ path: 'screenshots/products/homepage.png' });
+    await page.screenshot({ path: 'screenshots/products/01-homepage.png' });
   });
 
   test('should display correct page title', async ({ page }) => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await expect(page).toHaveTitle('STORE');
-    await page.screenshot({ path: 'screenshots/products/homepage-title.png' });
+    await page.screenshot({ path: 'screenshots/products/02-homepage-title.png' });
   });
 
   test('should navigate to product detail when clicking a product', async ({ page }) => {
@@ -29,7 +29,7 @@ test.describe('Product Browsing', () => {
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.productName).toBeVisible();
     await expect(detailPage.productName).not.toBeEmpty();
-    await page.screenshot({ path: 'screenshots/products/product-detail.png' });
+    await page.screenshot({ path: 'screenshots/products/03-product-detail.png' });
   });
 
   test('should display product price on detail page', async ({ page }) => {
@@ -39,7 +39,7 @@ test.describe('Product Browsing', () => {
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.productPrice).toBeVisible();
-    await page.screenshot({ path: 'screenshots/products/product-price.png' });
+    await page.screenshot({ path: 'screenshots/products/04-product-price.png' });
   });
 
   test('should display "Add to cart" button on detail page', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('Product Browsing', () => {
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.addToCartButton).toBeVisible();
-    await page.screenshot({ path: 'screenshots/products/add-to-cart-button.png' });
+    await page.screenshot({ path: 'screenshots/products/05-add-to-cart-button.png' });
   });
 
   test('should navigate to specific product by name', async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe('Product Browsing', () => {
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.productName).toHaveText(specificProduct);
-    await page.screenshot({ path: 'screenshots/products/samsung-s6-detail.png' });
+    await page.screenshot({ path: 'screenshots/products/06-samsung-s6-detail.png' });
   });
 
   test('should navigate back to homepage from product detail', async ({ page }) => {
@@ -71,7 +71,7 @@ test.describe('Product Browsing', () => {
     await productsPage.navigateHome();
 
     await expect(page).toHaveURL(/demoblaze\.com/);
-    await page.screenshot({ path: 'screenshots/products/back-home.png' });
+    await page.screenshot({ path: 'screenshots/products/07-back-home.png' });
   });
 });
 
@@ -80,7 +80,7 @@ test.describe('Product Categories', () => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await expect(productsPage.categoryLinks).toHaveCount(3);
-    await page.screenshot({ path: 'screenshots/products/categories.png' });
+    await page.screenshot({ path: 'screenshots/products/08-categories.png' });
   });
 
   for (const category of productCategories) {
@@ -91,7 +91,8 @@ test.describe('Product Categories', () => {
       await page.waitForSelector('.card-title a');
       const count = await productsPage.getProductCount();
       expect(count).toBeGreaterThan(0);
-      await page.screenshot({ path: `screenshots/products/category-${category.toLowerCase()}.png` });
+      const num = String(productCategories.indexOf(category) + 9).padStart(2, '0');
+      await page.screenshot({ path: `screenshots/products/${num}-category-${category.toLowerCase()}.png` });
     });
   }
 });

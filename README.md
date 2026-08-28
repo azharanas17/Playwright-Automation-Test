@@ -153,3 +153,27 @@ After running tests, HTML report is generated in `playwright-report/`.
 ```bash
 npx playwright show-report
 ```
+
+---
+
+## Screenshot Evidence
+
+Screenshots are captured at two levels as test evidence:
+
+### 1. Auto Screenshots (config-level)
+- `screenshot: 'on'` in `playwright.config.ts`
+- One screenshot captured automatically after every test
+- Saved to `test-results/` and embedded in the HTML report
+
+### 2. Manual Screenshots (key steps)
+- Captured at important steps using `page.screenshot()`
+- Saved to `screenshots/` with numbered prefixes per folder to show flow order
+
+```
+screenshots/
+├── login/        (01-05)  modal, form elements, validation states
+├── products/     (01-11)  homepage, detail, price, add-to-cart, categories
+└── cart/         (01-04)  cart with item, checkout form, checkout success
+```
+
+In CI (GitHub Actions), both `playwright-report-*` and `screenshots-*` are uploaded as artifacts per shard and can be downloaded from the Actions run.

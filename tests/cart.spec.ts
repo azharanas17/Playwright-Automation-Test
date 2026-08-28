@@ -20,7 +20,7 @@ test.describe('Shopping Cart', () => {
 
     const cartPage = new CartPage(page);
     await expect(cartPage.totalPrice).not.toBeEmpty();
-    await page.screenshot({ path: 'screenshots/cart/cart-with-item.png' });
+    await page.screenshot({ path: 'screenshots/cart/01-cart-with-item.png' });
   });
 });
 
@@ -36,19 +36,19 @@ test.describe('Checkout Process', () => {
 
     await productsPage.navigateToCart();
     await page.waitForSelector('#tbodyid tr', { timeout: 15000 });
-    await page.screenshot({ path: 'screenshots/cart/cart-before-checkout.png' });
+    await page.screenshot({ path: 'screenshots/cart/02-cart-before-checkout.png' });
 
     const cartPage = new CartPage(page);
     await cartPage.clickPlaceOrder();
 
     const checkoutPage = new CheckoutPage(page);
     await checkoutPage.fillCheckoutForm(checkoutData);
-    await page.screenshot({ path: 'screenshots/cart/checkout-form.png' });
+    await page.screenshot({ path: 'screenshots/cart/03-checkout-form.png' });
     await checkoutPage.purchase();
 
     const message = await checkoutPage.getConfirmationMessage();
     expect(message).toContain('Thank you for your purchase!');
-    await page.screenshot({ path: 'screenshots/cart/checkout-success.png' });
+    await page.screenshot({ path: 'screenshots/cart/04-checkout-success.png' });
 
     await checkoutPage.confirmPurchase();
   });

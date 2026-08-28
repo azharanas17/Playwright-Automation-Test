@@ -14,7 +14,7 @@ test.describe('Login Functionality', () => {
     test('should open login modal when clicking login link', async ({ page }) => {
       await loginPage.openLoginModal();
       await expect(loginPage.loginModal).toBeVisible();
-      await page.screenshot({ path: 'screenshots/login/login-modal.png' });
+      await page.screenshot({ path: 'screenshots/login/01-login-modal.png' });
     });
 
     test('should display all login form elements', async ({ page }) => {
@@ -22,7 +22,7 @@ test.describe('Login Functionality', () => {
       await expect(loginPage.usernameField).toBeVisible();
       await expect(loginPage.passwordField).toBeVisible();
       await expect(loginPage.loginButton).toBeVisible();
-      await page.screenshot({ path: 'screenshots/login/login-form-elements.png' });
+      await page.screenshot({ path: 'screenshots/login/02-login-form-elements.png' });
     });
   });
 
@@ -35,7 +35,7 @@ test.describe('Login Functionality', () => {
 
       await loginPage.login(loginData.invalid.username, loginData.invalid.password);
       await page.waitForTimeout(500);
-      await page.screenshot({ path: 'screenshots/login/invalid-credentials.png' });
+      await page.screenshot({ path: 'screenshots/login/03-invalid-credentials.png' });
     });
 
     test('should show alert with empty credentials', async ({ page }) => {
@@ -46,7 +46,7 @@ test.describe('Login Functionality', () => {
 
       await loginPage.login(loginData.empty.username, loginData.empty.password);
       await page.waitForTimeout(500);
-      await page.screenshot({ path: 'screenshots/login/empty-credentials.png' });
+      await page.screenshot({ path: 'screenshots/login/04-empty-credentials.png' });
     });
 
     test('should show alert with only username provided', async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe('Login Functionality', () => {
 
       await loginPage.login(loginData.usernameOnly.username, loginData.usernameOnly.password);
       await page.waitForTimeout(500);
-      await page.screenshot({ path: 'screenshots/login/username-only.png' });
+      await page.screenshot({ path: 'screenshots/login/05-username-only.png' });
     });
   });
 });
