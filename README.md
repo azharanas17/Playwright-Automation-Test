@@ -167,13 +167,17 @@ Screenshots are captured at two levels as test evidence:
 
 ### 2. Manual Screenshots (key steps)
 - Captured at important steps using `page.screenshot()`
-- Saved to `screenshots/` with numbered prefixes per folder to show flow order
+- Saved to `screenshots/<browser>/` with numbered prefixes per folder to show flow order
+- Browser subfolder (`chromium`, `firefox`, `webkit`) keeps each run's evidence unique across shards/projects
 
 ```
 screenshots/
-├── login/        (01-05)  modal, form elements, validation states
-├── products/     (01-11)  homepage, detail, price, add-to-cart, categories
-└── cart/         (01-04)  cart with item, checkout form, checkout success
+├── chromium/     (for all 3 projects)
+│   ├── login/        (01-05)  modal, form elements, validation states
+│   ├── products/     (01-11)  homepage, detail, price, add-to-cart, categories
+│   └── cart/         (01-04)  cart with item, checkout form, checkout success
+├── firefox/      (same structure)
+└── webkit/       (same structure)
 ```
 
 In CI (GitHub Actions), both `playwright-report-*` and `screenshots-*` are uploaded as artifacts per shard and can be downloaded from the Actions run.

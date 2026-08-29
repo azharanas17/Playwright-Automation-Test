@@ -6,7 +6,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { BASE_URL, checkoutData } from './fixtures/testData';
 
 test.describe('Shopping Cart', () => {
-  test('should add a product to cart and verify total price', async ({ page }) => {
+  test('should add a product to cart and verify total price', async ({ page }, testInfo) => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await productsPage.clickFirstProduct();
@@ -20,12 +20,12 @@ test.describe('Shopping Cart', () => {
 
     const cartPage = new CartPage(page);
     await expect(cartPage.totalPrice).not.toBeEmpty();
-    await page.screenshot({ path: 'screenshots/cart/01-cart-with-item.png' });
+    await page.screenshot({ path: `screenshots/${testInfo.project.name}/cart/01-cart-with-item.png` });
   });
 });
 
 test.describe('Checkout Process', () => {
-  test('should complete checkout with valid data', async ({ page }) => {
+  test('should complete checkout with valid data', async ({ page }, testInfo) => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await productsPage.clickFirstProduct();
@@ -36,19 +36,19 @@ test.describe('Checkout Process', () => {
 
     await productsPage.navigateToCart();
     await page.waitForSelector('#tbodyid tr', { timeout: 15000 });
-    await page.screenshot({ path: 'screenshots/cart/02-cart-before-checkout.png' });
+    await page.screenshot({ path: `screenshots/${testInfo.project.name}/cart/02-cart-before-checkout.png` });
 
     const cartPage = new CartPage(page);
     await cartPage.clickPlaceOrder();
 
     const checkoutPage = new CheckoutPage(page);
     await checkoutPage.fillCheckoutForm(checkoutData);
-    await page.screenshot({ path: 'screenshots/cart/03-checkout-form.png' });
+    await page.screenshot({ path: `screenshots/${testInfo.project.name}/cart/03-checkout-form.png` });
     await checkoutPage.purchase();
 
     const message = await checkoutPage.getConfirmationMessage();
     expect(message).toContain('Thank you for your purchase!');
-    await page.screenshot({ path: 'screenshots/cart/04-checkout-success.png' });
+    await page.screenshot({ path: `screenshots/${testInfo.project.name}/cart/04-checkout-success.png` });
 
     await checkoutPage.confirmPurchase();
   });
