@@ -10,7 +10,10 @@ export default defineConfig({
     ['html', { open: 'never' }],
     ['list'],
   ],
-  timeout: 60000,
+  timeout: 90000,
+  expect: {
+    timeout: 30000,
+  },
   use: {
     baseURL: 'https://www.demoblaze.com/',
     trace: 'on-first-retry',

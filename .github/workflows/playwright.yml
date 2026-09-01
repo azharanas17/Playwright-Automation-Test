@@ -47,3 +47,11 @@ jobs:
           name: screenshots-${{ matrix.shard }}
           path: screenshots/
           retention-days: 14
+
+      - name: Upload traces and test results
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-results-${{ matrix.shard }}
+          path: test-results/
+          retention-days: 14

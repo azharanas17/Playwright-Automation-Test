@@ -34,7 +34,6 @@ export class LoginPage extends BasePage {
 
   async login(username: string, password: string) {
     await this.openLoginModal();
-    await this.usernameField.waitFor({ state: 'visible' });
     await this.usernameField.fill(username);
     await this.passwordField.fill(password);
     await this.loginButton.click();

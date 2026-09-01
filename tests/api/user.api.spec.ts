@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ApiClient } from './apiClient';
+import { generateUniqueEmail } from '../utils/helpers';
 
 let api: ApiClient;
 
@@ -52,7 +53,7 @@ test.describe('User API - GET Operations', () => {
 
 test.describe('User API - POST Operations', () => {
   test('should create a new user', async () => {
-    const uniqueEmail = `user_${Date.now()}@test.com`;
+    const uniqueEmail = generateUniqueEmail('user');
     const response = await api.post('/user/create', {
       firstName: 'John',
       lastName: 'Doe',
@@ -68,7 +69,7 @@ test.describe('User API - POST Operations', () => {
   });
 
   test('should create user and retrieve by ID', async () => {
-    const uniqueEmail = `crossop_${Date.now()}@test.com`;
+    const uniqueEmail = generateUniqueEmail('crossop');
     const createResponse = await api.post('/user/create', {
       firstName: 'CrossOp',
       lastName: 'Test',
@@ -121,7 +122,7 @@ test.describe('User API - PUT Operations', () => {
 
 test.describe('User API - DELETE Operations', () => {
   test('should delete a user by creating and deleting', async () => {
-    const uniqueEmail = `todelete_${Date.now()}@test.com`;
+    const uniqueEmail = generateUniqueEmail('todelete');
     const createResponse = await api.post('/user/create', {
       firstName: 'ToDelete',
       lastName: 'User',

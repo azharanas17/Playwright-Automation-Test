@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
@@ -9,9 +9,5 @@ export class BasePage {
 
   async goto(url: string) {
     await this.page.goto(url);
-  }
-
-  async waitForSelector(selector: string) {
-    await this.page.waitForSelector(selector);
   }
 }

@@ -2,7 +2,12 @@
   "name": "playwright",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test tests/api/",
+    "test:web": "playwright test tests/login.spec.ts tests/products.spec.ts tests/cart.spec.ts",
+    "report": "playwright show-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

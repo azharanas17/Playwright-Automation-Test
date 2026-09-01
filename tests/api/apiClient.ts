@@ -1,9 +1,10 @@
-import { APIRequestContext, expect } from '@playwright/test';
+import { APIRequestContext } from '@playwright/test';
+import { DUMMYAPI_APP_ID, DUMMYAPI_BASE_URL } from '../fixtures/testData';
 
 export class ApiClient {
   readonly request: APIRequestContext;
-  readonly baseUrl = 'https://dummyapi.io/data/v1';
-  readonly appId = '63a804408eb0cb069b57e43a';
+  readonly baseUrl = DUMMYAPI_BASE_URL;
+  readonly appId = DUMMYAPI_APP_ID;
 
   constructor(request: APIRequestContext) {
     this.request = request;

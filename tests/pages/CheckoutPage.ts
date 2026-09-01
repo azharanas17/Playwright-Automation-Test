@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class CheckoutPage extends BasePage {
@@ -43,11 +43,6 @@ export class CheckoutPage extends BasePage {
 
   async purchase() {
     await this.purchaseButton.click();
-    await this.page.waitForSelector('.sweet-alert h2');
-  }
-
-  async getConfirmationMessage() {
-    return await this.confirmationMessage.textContent();
   }
 
   async confirmPurchase() {

@@ -1,5 +1,8 @@
 export const BASE_URL = 'https://www.demoblaze.com/';
 
+export const DUMMYAPI_BASE_URL = 'https://dummyapi.io/data/v1';
+export const DUMMYAPI_APP_ID = '63a804408eb0cb069b57e43a';
+
 export const loginData = {
   valid: {
     username: 'testuser123asdsds',

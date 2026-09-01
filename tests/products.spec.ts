@@ -24,7 +24,6 @@ test.describe('Product Browsing', () => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await productsPage.clickFirstProduct();
-    await page.waitForSelector('.name');
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.productName).toBeVisible();
@@ -46,7 +45,6 @@ test.describe('Product Browsing', () => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await productsPage.clickFirstProduct();
-    await page.waitForSelector('.btn-success');
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.addToCartButton).toBeVisible();
@@ -57,7 +55,6 @@ test.describe('Product Browsing', () => {
     const productsPage = new ProductsPage(page);
     await productsPage.goto(BASE_URL);
     await productsPage.clickProductByName(specificProduct);
-    await page.waitForSelector('.name');
 
     const detailPage = new ProductDetailPage(page);
     await expect(detailPage.productName).toHaveText(specificProduct);
@@ -88,7 +85,7 @@ test.describe('Product Categories', () => {
       const productsPage = new ProductsPage(page);
       await productsPage.goto(BASE_URL);
       await productsPage.clickCategory(category);
-      await page.waitForSelector('.card-title a');
+      await expect(productsPage.productNames.first()).toBeVisible();
       const count = await productsPage.getProductCount();
       expect(count).toBeGreaterThan(0);
       const num = String(productCategories.indexOf(category) + 9).padStart(2, '0');

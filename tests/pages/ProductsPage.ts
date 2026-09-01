@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class ProductsPage extends BasePage {
@@ -32,8 +32,12 @@ export class ProductsPage extends BasePage {
   }
 
   async clickCategory(categoryName: string) {
-    await this.page.getByText(categoryName, { exact: true }).click();
-    await this.page.waitForTimeout(1000);
+    await Promise.all([
+      this.page.waitForResponse(
+        (response) => response.url().includes('/bycat') && response.status() === 200
+      ),
+      this.categoryLinks.getByText(categoryName, { exact: true }).click(),
+    ]);
   }
 
   async navigateToCart() {
