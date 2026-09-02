@@ -113,9 +113,8 @@ npx playwright test --project=firefox
 npx playwright test --project=webkit
 ```
 
-### Run Tests with HTML Report
+### Open the HTML Report
 ```bash
-npx playwright test
 npx playwright show-report
 ```
 
@@ -143,6 +142,67 @@ Each shard runs all tests across 3 browsers (chromium, firefox, webkit) with:
 - 2 retries on failure
 - HTML report upload as artifact
 - 14-day retention
+
+### CI Artifacts
+Each shard uploads 3 artifacts that can be downloaded from the Actions run:
+
+| Artifact | Content | Purpose |
+|---|---|---|
+| `playwright-report-<shard>` | HTML report (embeds trace files + Trace Viewer) | View results & debug in-browser |
+| `screenshots-<shard>` | Manual step screenshots per browser | Visual evidence |
+| `test-results-<shard>` | Raw `trace.zip`, failed-test screenshot, `error-context.md` | Open traces with Trace Viewer |
+
+---
+
+## Synchronization
+
+Playwright's built-in **auto-waiting** is the primary synchronization mechanism:
+
+- Locator actions (`click`, `fill`) retry until the element is **actionable**.
+- Web-first assertions (`toBeVisible()`, `toHaveText()`, `toHaveURL()`, `toContainText()`) wait for the expected state before failing.
+
+Arbitrary fixed delays are the exception, not the rule:
+
+- **Removed** fixed sleeps (`waitForTimeout`) that masked timing.
+- `waitForSelector` before a web-first assertion is redundant (the assertion already waits) and was removed.
+- Where a meaningful application state exists, we wait for it:
+  - Dialog messages → `page.waitForEvent('dialog')` (the event, not a sleep).
+  - Category filtering (AJAX) → `page.waitForResponse()` for the `/bycat` API response.
+  - Checkout success → `toBeVisible()` / `toContainText()` on the confirmation message.
+
+**Principle:** *wait for a meaningful application state, not an arbitrary amount of time.*
+
+---
+
+## Debugging with Trace Viewer
+
+Playwright records a **trace** for every test via `trace: 'on'` in `playwright.config.ts`.
+
+After a run:
+
+```bash
+# Open the HTML report (traces are embedded — select a test and click "Trace")
+npx playwright show-report
+
+# Or open a raw trace directly
+npx playwright show-trace test-results/<test-name>/trace.zip
+```
+
+**Trace flow in CI:**
+
+```
+TEST FAILURE
+    ↓
+RETRY (2x) / test artifacts collected
+    ↓
+trace.zip written to test-results/
+    ↓
+playwright-report-N + test-results-N uploaded as artifacts
+    ↓
+Download artifact → open with Trace Viewer → debug
+```
+
+Traces are retained in both the `playwright-report-*` (embedded) and `test-results-*` (raw) artifacts.
 
 ---
 

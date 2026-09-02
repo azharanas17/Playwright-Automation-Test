@@ -16,7 +16,7 @@ export default defineConfig({
   },
   use: {
     baseURL: 'https://www.demoblaze.com/',
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'on',
   },
   projects: [
